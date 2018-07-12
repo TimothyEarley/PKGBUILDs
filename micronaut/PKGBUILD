@@ -1,0 +1,29 @@
+# Maintainer: Timothy Earley <timmy@earley.de>
+
+pkgname=micronaut
+pkgver=1.0.0.M2
+pkgrel=1
+pkgdesc="A modern, JVM-based, full-stack framework for building modular, easily testable microservice applications."
+arch=(any)
+url="http://micronaut.io/"
+license=(APACHE)
+depends=('java-environment' 'sh')
+source=("${pkgname}"
+        "https://github.com/micronaut-projects/micronaut-core/releases/download/v$pkgver/$pkgname-$pkgver.zip")
+md5sums=('57612995418fcbd5f10062fd314a67c0' 'dd006f68d7e61bf612065383326fbb12')
+
+package() {
+	cd "$pkgname-$pkgver"
+
+	# ignore shipped binary and used custom script as per arch wiki guidelines
+	# install -Dm755 bin/mn ${pkgdir}/usr/bin/mn
+
+	# Binary
+	install -Dm755 "${srcdir}/${pkgname}" "${pkgdir}/usr/bin/mn"
+	
+	# Jar
+	install -Dm644 "cli-$pkgver.jar" "${pkgdir}/usr/share/java/$pkgname.jar"
+
+	#License (it's Apache, so )
+	install -Dm644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
