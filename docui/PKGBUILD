@@ -1,0 +1,27 @@
+# Maintainer: Timothy Earley <timmy@earley.de>
+
+pkgname=docui
+pkgver=2.0.0
+pkgrel=1
+pkgdesc="TUI Client for Docker"
+arch=('any')
+url="https://github.com/skanehira/docui"
+license=(MIT)
+depends=()
+makedepends=('go')
+source=("https://github.com/skanehira/$pkgname/archive/$pkgver.tar.gz")
+md5sums=('4839803c1c1781cb97978bd7a96eba7d')
+
+build() {
+	cd "$pkgname-$pkgver"
+	GO111MODULE=on go build \
+	    -gcflags "all=-trimpath=${PWD}" \
+	    -asmflags "all=-trimpath=${PWD}" \
+	    -ldflags "-extldflags ${LDFLAGS}" \
+	    .
+}
+
+package() {
+	cd "$pkgname-$pkgver"
+	install -Dm755 $pkgname "$pkgdir"/usr/bin/$pkgname
+}
