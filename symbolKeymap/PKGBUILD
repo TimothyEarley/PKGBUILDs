@@ -1,0 +1,22 @@
+# Maintainer: Timothy Earley <timmy@earley.de>
+
+pkgname=symbolKeymap
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Switch symbols and numbers"
+arch=('any')
+url=""
+license=(MIT)
+# libxslt and moreutils (sponge) just bc I am lazy
+depends=(xkeyboard-config libxslt moreutils)
+makedepends=()
+source=(de_sym evdev_add.xslt evdev_remove.xslt)
+md5sums=(SKIP SKIP SKIP)
+install=".install"
+
+package() {
+	install -Dm 644 de_sym "$pkgdir/usr/share/X11/xkb/symbols/de_sym"
+	myDir="$pkgdir/usr/share/$pkgname"
+	install -Dm 644 evdev_add.xslt "$myDir/evdev_add.xslt"
+	install -Dm 644 evdev_remove.xslt "$myDir/evdev_remove.xslt"
+}

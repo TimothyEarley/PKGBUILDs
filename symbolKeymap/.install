@@ -1,0 +1,31 @@
+evdev='/usr/share/X11/xkb/rules/evdev.xml'
+
+add_config() {
+	# remove existing entry
+	if grep -q 'de_sym' "$evdev"; then
+		remove_config
+	fi
+	if grep -q 'de_sym' "$evdev"; then
+		# failed to remove the existing entry
+		echo "FAILED TO REMOVE EXISTING evdev.xml ENTRY! REMOVE IT YOURSELF."
+	fi
+	xsltproc --novalid /usr/share/symbolKeymap/evdev_add.xslt "$evdev" | sponge "$evdev"
+}
+
+remove_config() {
+	xsltproc --novalid /usr/share/symbolKeymap/evdev_remove.xslt "$evdev" | sponge "$evdev"
+}
+
+post_install() {
+	add_config
+}
+
+post_upgrade() {
+	remove_config
+	add_config
+}
+
+post_remove() {
+	remove_config
+}
+
